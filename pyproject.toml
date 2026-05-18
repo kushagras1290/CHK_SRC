@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chakra-page-scraper"
+version = "0.2.0"
+description = "Config-driven Playwright scraper for authorized Chakra CRM/page extraction."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "Proprietary" }
+authors = [{ name = "GemPundit Automation" }]
+dependencies = [
+  "playwright==1.59.0",
+  "pydantic==2.13.4",
+  "pydantic-settings==2.14.1",
+  "python-dotenv>=1.0.1,<2.0.0",
+  "PyYAML>=6.0.2,<7.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9.0",
+  "pytest-cov>=5.0,<6.0",
+  "ruff>=0.13,<0.14",
+  "mypy>=1.17,<2.0",
+  "types-PyYAML>=6.0.12,<7.0.0",
+]
+
+[project.scripts]
+chakra-scraper = "chakra_scraper.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM", "C4", "ARG", "PTH", "RUF"]
+ignore = [
+  "S101",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+packages = ["chakra_scraper"]
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=chakra_scraper --cov-report=term-missing"

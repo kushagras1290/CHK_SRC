@@ -1,4 +1,4 @@
-# Chakra Page Scraper — GOAT Version
+# Chakra Page Scraper 
 
 A config-driven, Playwright-based scraper for **authorized** Chakra CRM/page extraction.
 

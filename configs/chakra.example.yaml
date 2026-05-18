@@ -1,0 +1,84 @@
+# Copy to configs/chakra.local.yaml and replace selectors/URLs after inspecting Chakra DOM.
+# Use `chakra-scraper snapshot --url <page-url>` to capture HTML/text for selector tuning.
+
+name: chakra-leads
+list_url: "https://chakra.example.com/leads"
+allowed_hosts:
+  - "chakra.example.com"
+output_basename: "chakra_export"
+max_pages: 50
+block_external_links: true
+
+list_selectors:
+  container: "table"
+  row: "table tbody tr"
+  detail_link: "a[href*='/lead'], a[href*='/customer'], a[href*='/conversation']"
+  next_button: "button:has-text('Next')"
+  next_button_disabled: "button:has-text('Next')[disabled], button[aria-label='Next page'][disabled]"
+  empty_state: "text=No data"
+  wait_for: "table tbody tr"
+
+detail_selectors:
+  wait_for: "body"
+  include_full_text_hash: true
+  include_page_title: true
+  fields:
+    lead_id:
+      label: "Lead ID"
+      regex: "Lead ID\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    customer_name:
+      label: "Name"
+      fallback_selectors:
+        - "[data-testid='customer-name']"
+        - ".customer-name"
+      required: false
+    phone:
+      label: "Phone"
+      regex: "(?:Phone|Mobile)\\s*[:\\-]\\s*(\\+?[0-9][0-9\\s\-]{7,})"
+      required: false
+    email:
+      label: "Email"
+      regex: "([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,})"
+      required: false
+    status:
+      label: "Status"
+      fallback_selectors:
+        - "[data-testid='lead-status']"
+        - ".lead-status"
+      required: false
+    owner:
+      label: "Owner"
+      fallback_selectors:
+        - "[data-testid='owner']"
+      required: false
+    created_at:
+      label: "Created At"
+      regex: "Created(?: At)?\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    updated_at:
+      label: "Updated At"
+      regex: "Updated(?: At)?\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    order_or_bot_no:
+      label: "Order No"
+      regex: "(?:Order No|BOT No|Order/BOT)\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    gemstone:
+      label: "Gemstone"
+      regex: "Gemstone\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    carat:
+      label: "Carat"
+      regex: "(?:Carat|Weight)\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    budget:
+      label: "Budget"
+      regex: "Budget\\s*[:\\-]\\s*([^\\n]+)"
+      required: false
+    comments:
+      label: "Comments"
+      fallback_selectors:
+        - "[data-testid='comments']"
+        - ".comments"
+      required: false
